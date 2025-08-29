@@ -1,0 +1,22 @@
+export const QUOTES = [
+  "It's just consolidating before the next leg up.",
+  "Red days are for accumulation.",
+  "The devs are building.",
+  "I didn't lose, I increased my conviction.",
+  "Only paper hands sell the bottom.",
+  "Weekly still looks bullish.",
+  "Market makers are hunting stops.",
+  "Wick below support to shake out weak hands.",
+  "Smart money is accumulating quietly.",
+  "It's a healthy correction.",
+  "Zoom out, we're still early.",
+  "FUD is temporary, tech is forever.",
+  "Giga-brain buy zone.",
+  "This is the last dip before the rip.",
+  "Liquidity was needed for the next move.",
+  "I'm not trapped, just staking.",
+  "My average is down, so risk is down.",
+  "Whales want your bags.",
+  "Narrative rotation is coming back.",
+  "We're so back after this retest."
+] 
