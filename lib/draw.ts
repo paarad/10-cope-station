@@ -26,40 +26,83 @@ export function drawCard(
   ctx.lineWidth = 2
   ctx.strokeRect(1, 1, w-2, h-2)
 
-  // text fit
+  // Smart text wrapping that balances lines
   const maxWidth = w * 0.8
   const fit = (min: number, max: number) => {
     let lo = min, hi = max
-    const measure = (sz: number) => {
+    
+    const wrapText = (sz: number) => {
       ctx.font = `600 ${sz}px Inter, system-ui, -apple-system, BlinkMacSystemFont, sans-serif`
-      const words = text.split(" "); const lines: string[] = []
-      let line = ""
-      for (const word of words) {
-        const test = line ? `${line} ${word}` : word
-        if (ctx.measureText(test).width <= maxWidth) line = test
-        else { lines.push(line); line = word }
+      const words = text.split(" ")
+      const lines: string[] = []
+      
+      if (words.length <= 2) {
+        // For short quotes, just put them on one line
+        return [text]
       }
-      if (line) lines.push(line)
+      
+      // Try to balance the lines
+      const totalWords = words.length
+      const targetLines = Math.ceil(totalWords / 2) // Aim for 2-3 lines
+      
+      let currentLine = ""
+      let lineCount = 0
+      
+      for (let i = 0; i < words.length; i++) {
+        const word = words[i]
+        const testLine = currentLine ? `${currentLine} ${word}` : word
+        const testWidth = ctx.measureText(testLine).width
+        
+        // If adding this word would make the line too long
+        if (testWidth > maxWidth) {
+          // If we have a current line, finish it and start new line
+          if (currentLine) {
+            lines.push(currentLine)
+            currentLine = word
+            lineCount++
+          } else {
+            // If no current line, force the word (it's too long)
+            lines.push(word)
+            lineCount++
+          }
+        } else {
+          // Check if we should break here to balance lines
+          const remainingWords = words.length - i - 1
+          const remainingLines = targetLines - lineCount - 1
+          
+          if (remainingWords > 0 && remainingLines > 0 && 
+              remainingWords / remainingLines <= 2 && 
+              currentLine && testWidth > maxWidth * 0.6) {
+            // Break here to balance the remaining words
+            lines.push(currentLine)
+            currentLine = word
+            lineCount++
+          } else {
+            // Continue building current line
+            currentLine = testLine
+          }
+        }
+      }
+      
+      // Add the last line
+      if (currentLine) {
+        lines.push(currentLine)
+      }
+      
       return lines
     }
+    
     while (hi - lo > 1) {
       const mid = Math.floor((lo + hi)/2)
-      const lines = measure(mid)
+      const lines = wrapText(mid)
       const height = lines.length * mid * 1.4
       if (height <= h * 0.7) lo = mid; else hi = mid
     }
-    ctx.font = `600 ${lo}px Inter, system-ui, -apple-system, BlinkMacSystemFont, sans-serif`
-    const lines = text.split(" "); // recompute lines
-    // do the same loop again:
-    const words = text.split(" "); const out: string[] = []; let line = ""
-    for (const w2 of words) {
-      const test = line ? `${line} ${w2}` : w2
-      if (ctx.measureText(test).width <= maxWidth) line = test
-      else { out.push(line); line = w2 }
-    }
-    if (line) out.push(line)
-    return out
+    
+    // Get final lines with optimal font size
+    return wrapText(lo)
   }
+  
   const lines = fit(32, 80)
 
   // Clean, modern text
