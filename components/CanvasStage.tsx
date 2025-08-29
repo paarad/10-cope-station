@@ -44,8 +44,15 @@ export default function CanvasStage() {
   return (
     <div className="w-full max-w-4xl mx-auto flex flex-col items-center gap-4">
       <h1 className="text-2xl font-bold opacity-90">Cope Station</h1>
-      <div className="w-full rounded-2xl overflow-hidden shadow-xl border border-white/10">
-        <canvas ref={ref} width={W} height={H} className="w-full h-auto block" aria-label="preview" />
+      <div className="w-full max-w-2xl rounded-2xl overflow-hidden shadow-xl border border-white/10">
+        <canvas 
+          ref={ref} 
+          width={W} 
+          height={H} 
+          className="w-full h-auto max-h-[60vh] object-contain" 
+          style={{ aspectRatio: `${W}/${H}` }}
+          aria-label="preview" 
+        />
       </div>
       <div className="flex flex-wrap gap-3">
         <button onClick={()=>setQuote(nextQuote())} className="px-4 py-2 rounded-xl bg-white/10 hover:bg-white/20">

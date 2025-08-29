@@ -22,7 +22,7 @@ export function drawCard(
   const fit = (min: number, max: number) => {
     let lo = min, hi = max
     const measure = (sz: number) => {
-      ctx.font = `800 ${sz}px Inter, system-ui, sans-serif`
+      ctx.font = `800 ${sz}px Inter, system-ui, -apple-system, BlinkMacSystemFont, sans-serif`
       const words = text.split(" "); const lines: string[] = []
       let line = ""
       for (const word of words) {
@@ -39,7 +39,7 @@ export function drawCard(
       const height = lines.length * mid * 1.3
       if (height <= h * 0.68) lo = mid; else hi = mid
     }
-    ctx.font = `800 ${lo}px Inter, system-ui, sans-serif`
+    ctx.font = `800 ${lo}px Inter, system-ui, -apple-system, BlinkMacSystemFont, sans-serif`
     const lines = text.split(" "); // recompute lines
     // do the same loop again:
     const words = text.split(" "); const out: string[] = []; let line = ""
@@ -65,7 +65,7 @@ export function drawCard(
 
   // footer
   ctx.shadowBlur = 0; ctx.globalAlpha = .75
-  ctx.font = "700 24px Inter, system-ui, sans-serif"
+  ctx.font = "700 24px Inter, system-ui, -apple-system, BlinkMacSystemFont, sans-serif"
   ctx.fillText(footer, w/2, h - 56)
   ctx.globalAlpha = 1
 } 
